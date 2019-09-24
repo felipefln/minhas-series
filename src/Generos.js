@@ -13,15 +13,27 @@ const Generos = () => {
             })
     }, [])
 
+    const deleteGenero = id => {
+        axios
+        .delete('/api/genres/' + id)
+        .then(res => {
+            const filtrado = data.filter(item => item.id !== id)
+            setData(filtrado)
+        })
+    }
+
     const renderizaLinha = record => {
         return (
             <tr key={record.key}>
                 <th scope="row">{record.id}</th>
                 <td>{record.name}</td>
-                <td><button>+</button></td>
+                <td><button  className='btn btn-danger' onClick={() => deleteGenero(record.id)}>Remover</button></td>
+                <Link to={'/generos/' + record.id} className='btn btn-warning'>Editar</Link>
             </tr>
         )
     }
+
+    
 
     if (data.length === 0) {
         return (
@@ -34,11 +46,12 @@ const Generos = () => {
             </div>
         )
     }
+    
     return (
         <div className='container'>
             <h1>Genêros</h1>
             <div>
-                <Link to='/generos/novo'>Novo Genêro</Link>
+                <Link to='/generos/novo' className='btn btn-primary'>Novo Genêro</Link>
             </div>
 
             <table className="table table-dark">
